@@ -930,39 +930,29 @@ end
 
 function EquipSearch.OnItemMouseEnter()
 	local szName = this:GetName()
-    if szName == "Box_Bg" or szName == "iteminfolink" then
-		if this:GetType() ~= "Box" then return end
-		if not this:IsEmpty() then
-			if IsAltKeyDown() then
-				local szTip = ""
-				if tEquipdb[this.dwTabType] then
-					local tData = tEquipdb[this.dwTabType][this.nItemID]
-					if tData then
-						szTip = EquipSearch.GetDropInfoFromEquipdb(tData)
-					end
-				end
-				local x, y = this:GetAbsPos()
-				local w, h = this:GetSize()	
-				if szTip ~= "" then
-					OutputTip(szTip, 400, {x, y, w, h})
-				else
-					OutputTip(GetFormatText("‘›ŒﬁœÍœ∏µÙ¬‰–≈œ¢", 20), 400, {x, y, w, h})
-				end
-			else
-				local x, y = this:GetAbsPos()
-				local w, h = this:GetSize()
-				OutputItemTip(UI_OBJECT_ITEM_INFO, GLOBAL.CURRENT_ITEM_VERSION, this.dwTabType, this.nItemID, {x, y, w, h})
-			end
-		end
-	elseif szName == "Handle_ItemList" or szName == "Handle_ListContent" or szName == "Handle_List01" then
-		local tImage = 
-        {
-            ["Handle_ItemList"] = "Image_Light",
-            ["Handle_ListContent"] = "Image_SearchListCover",
-            ["Handle_List01"] = "Image_SearchListCover01",
-        }
-        this.bOver = true
-		EquipSearch.UpdateBgStatus(this, tImage[szName])        
+    if szName == "Handle_ItemList" or szName == "iteminfolink" then
+		if IsAltKeyDown() then
+			-- local szTip = ""
+			-- if tEquipdb[this.dwTabType] then
+			-- 	local tData = tEquipdb[this.dwTabType][this.nItemID]
+			-- 	if tData then
+			-- 		szTip = EquipSearch.GetDropInfoFromEquipdb(tData)
+			-- 	end
+			-- end
+			-- local x, y = this:GetAbsPos()
+			-- local w, h = this:GetSize()	
+			-- if szTip ~= "" then
+			-- 	OutputTip(szTip, 400, {x, y, w, h})
+			-- else
+			-- 	OutputTip(GetFormatText("‘›ŒﬁœÍœ∏µÙ¬‰–≈œ¢", 20), 400, {x, y, w, h})
+			-- end
+		else
+			local box = this:Lookup("Box_Bg")
+			local x, y = box:GetAbsPos()
+			local w, h = box:GetSize()
+			OutputItemTip(UI_OBJECT_ITEM_INFO, GLOBAL.CURRENT_ITEM_VERSION, box.dwTabType, box.nItemID, {x, y, w, h})
+			this:Lookup("Image_Light"):Show()
+		end 
     elseif this:IsLink() and this:GetType() == "Text" then
         this.nFont=this:GetFontScheme()
         this:SetFontScheme(188)
@@ -971,17 +961,10 @@ end
 
 function EquipSearch.OnItemMouseLeave()
 	local szName = this:GetName()
-	if szName == "Box_Bg" then
-		HideTip()
-	elseif szName == "Handle_ItemList" or szName == "Handle_ListContent" or szName == "Handle_List01" then
-        local tImage = 
-        {
-            ["Handle_ItemList"] = "Image_Light",
-            ["Handle_ListContent"] = "Image_SearchListCover",
-            ["Handle_List01"] = "Image_SearchListCover01",
-        }
+	if szName == "Handle_ItemList" or szName == "iteminfolink" then
+        HideTip()
+        this:Lookup("Image_Light"):Hide()
 		this.bOver = false
-		EquipSearch.UpdateBgStatus(this, tImage[szName])
     elseif this:IsLink() and this:GetType() == "Text" then
         this:SetFontScheme(this.nFont)
 	end
