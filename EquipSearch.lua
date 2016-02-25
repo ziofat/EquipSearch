@@ -23,6 +23,9 @@ local tFilter = {
 	nColorID = -1,
 	}
 EquipSearch = EquipSearch or {}
+
+
+
 EquipSearch.tSearchSort =
 	{
 		["兵刃"] =
@@ -32,7 +35,7 @@ EquipSearch.tSearchSort =
 		 	{
 		 		["棍类"]   = 1,
 				["长兵"]   = 2,
-				["短兵类"] = 3,				
+				["短兵类"] = 3,
 				["双兵类"] = 5,
 				["笔类"]   = 6,
 				["重兵类"] = 7,
@@ -41,7 +44,8 @@ EquipSearch.tSearchSort =
 				["弯刀"] = 10,
 				["短棒"] = 11,
 				["刀盾"] = 12,
-		 	},
+				["琴"] = 13,
+			},
 		},
 		["暗器"] =
 		{
@@ -87,15 +91,33 @@ EquipSearch.tSearchSort =
 			nSortID = 5,
 			tSubSort =
 			{
-				["坐骑"]     = 1,
+				["马术坐骑"] = 1,
 				["坐骑头饰"] = 2,
 				["坐骑胸饰"] = 3,
 				["坐骑足饰"] = 4,
 				["坐骑鞍具"] = 5,
 				["坐骑幼崽"] = 6,
+				["椅子坐骑"] = 7,
+				["船类坐骑"] = 8,
+				["骑术坐骑"] = 9,
+				["御空坐骑"] = 10,
+				["恶人谷阵营坐骑"] = 12,
+				["浩气盟阵营坐骑"] = 13,
+				["稀有坐骑"] = 15,
+				["未知类型16"] = 16,
+				["未知类型17"] = 17,
+				["未知类型18"] = 18,
+				["未知类型19"] = 19,
+				["未知类型20"] = 20,
 			},
 		},
-		["包裹"] = {nSortID = 6, tSubSort = {}, },
+		["包裹"] = {
+			nSortID = 6,
+			tSubSort = {
+				["普通包裹"] = 1,
+				["材料包裹"] = 2,
+			},
+		},
 		["秘笈"] =
 		{
 			nSortID = 7,
@@ -106,7 +128,7 @@ EquipSearch.tSearchSort =
 				["天策秘笈"] = 3,
 				["少林秘笈"] = 4,
 				["七秀秘笈"] = 5,
-				["万花秘笈"] = 6,				
+				["万花秘笈"] = 6,
 				["藏剑秘笈"] = 7,
 				["五毒秘笈"] = 8,
 				["唐门秘笈"] = 9,
@@ -137,6 +159,7 @@ EquipSearch.tSearchSort =
 				-- ["物品强化"] = 3,
 				["礼品"]     = 4,
 				["草料"]     = 5,
+				["大附魔"]   = 7,
 			},
 		},
 		["物品强化"] =
@@ -242,10 +265,10 @@ function EquipSearch.FormatItemInfo(tLine, dwType)
 		szName = szItemName,	--物品名称
 		nRepresentID = tLine.RepresentID or 0,	--模型ID
 		nColorID = tLine.ColorID or 0,	--颜色ID
-		szEquipType = EquipSearch.GetItemAuctionType(tLine.AucGenre, tLine.AucSubType) or "",	--装备类型
+		szEquipType = EquipSearch.GetItemAuctionType(tLine.AucGenre, tLine.AucSubType) or tLine.AucGenre .. " # " .. tLine.AucSubType,	--装备类型
 		nRequireLevel = tLine.Require1Value or 0,	--需求等级
 		nQualityLevel = tLine.Level or 0,	--装备品级
-		nQuality = tLine.Quality or 0,	--装备品质	
+		nQuality = tLine.Quality or 0,	--装备品质
 		szBelongSchool = tLine.BelongSchool or "",	--所属职业
 		szMagicKind = tLine.MagicKind or "",	--类型
 		szMagicType = tLine.MagicType or "",	--类型
@@ -258,14 +281,14 @@ function EquipSearch.FormatItemInfo(tLine, dwType)
 end
 
 function EquipSearch.FilterItem(tData)
-	if (tFilter.nSort==0 or tFilter.nSort==tData.nAucGenre) and 
+	if (tFilter.nSort==0 or tFilter.nSort==tData.nAucGenre) and
 		(tFilter.nSubSort==0 or tFilter.nSubSort==tData.nAucSubType) and
 		(tFilter.nQuality==-1 or tFilter.nQuality==tData.nQuality) and
 		(tFilter.szName=="" or StringFindW(tData.szName, tFilter.szName) ) and
 		(tFilter.szGetType =="" or StringFindW(tData.szGetType, tFilter.szGetType) ) and
-		(tFilter.nLevelMin <= tData.nRequireLevel)	and 
-		(tFilter.nLevelMax >= tData.nRequireLevel)	and 
-		(tFilter.nQualityLevelMin <= tData.nQualityLevel)	and 
+		(tFilter.nLevelMin <= tData.nRequireLevel)	and
+		(tFilter.nLevelMax >= tData.nRequireLevel)	and
+		(tFilter.nQualityLevelMin <= tData.nQualityLevel)	and
 		(tFilter.nQualityLevelMax >= tData.nQualityLevel)	and
 		(tFilter.nRepresentID==-1 or tFilter.nRepresentID==tData.nRepresentID) and
 		(tFilter.nColorID==-1 or tFilter.nColorID==tData.nColorID) then
@@ -394,7 +417,7 @@ function EquipSearch.ResetFilter()
 	hWnd:Lookup("Edit_QualityLevel2"):SetText("")
 	hWnd:Lookup("Edit_RepresentID"):SetText("")
 	hWnd:Lookup("Edit_ColorID"):SetText("")
-	
+
 	tFilter.nQuality = -1
 	tFilter.szSchoolType = ""
 	tFilter.szGetType = ""
@@ -411,32 +434,32 @@ end
 --刷新搜索结果
 function EquipSearch.UpdateResult()
 	local frame = Station.Lookup("Normal/EquipSearch")
-	
+
 	tResult = {}
 	RESULT_PAGE_START = 1
-	local nCount = 0 
-	
+	local nCount = 0
+
 	for i=2,#tDataBase,1 do
 		tData = tDataBase[i]
 		if EquipSearch.FilterItem(tData) then
 			table.insert(tResult, tData)
 		end
 	end
-	
-	
+
+
 	EquipSearch.UpdateResultList(frame, RESULT_PAGE_START, tResult)
 end
 
 --加载数据
 function EquipSearch.LoadData()
 	tDataBase = {}
-	EquipSearch.Custom_Armor_List = KG_Table.Load(EquipSearch.Custom_Armor_Tab.Path, EquipSearch.Custom_Armor_Tab.Title) or 
-															KG_Table.Load(EquipSearch.Custom_Armor_Tab_2.Path, EquipSearch.Custom_Armor_Tab_2.Title)	
-	EquipSearch.Custom_Weapon_List = KG_Table.Load(EquipSearch.Custom_Weapon_Tab.Path, EquipSearch.Custom_Weapon_Tab.Title)or 
+	EquipSearch.Custom_Armor_List = KG_Table.Load(EquipSearch.Custom_Armor_Tab.Path, EquipSearch.Custom_Armor_Tab.Title) or
+															KG_Table.Load(EquipSearch.Custom_Armor_Tab_2.Path, EquipSearch.Custom_Armor_Tab_2.Title)
+	EquipSearch.Custom_Weapon_List = KG_Table.Load(EquipSearch.Custom_Weapon_Tab.Path, EquipSearch.Custom_Weapon_Tab.Title)or
 															KG_Table.Load(EquipSearch.Custom_Weapon_Tab_2.Path, EquipSearch.Custom_Weapon_Tab_2.Title)
-	EquipSearch.Custom_Trinket_List = KG_Table.Load(EquipSearch.Custom_Trinket_Tab.Path, EquipSearch.Custom_Trinket_Tab.Title)or 
+	EquipSearch.Custom_Trinket_List = KG_Table.Load(EquipSearch.Custom_Trinket_Tab.Path, EquipSearch.Custom_Trinket_Tab.Title)or
 															KG_Table.Load(EquipSearch.Custom_Trinket_Tab_2.Path, EquipSearch.Custom_Trinket_Tab_2.Title)
-	EquipSearch.Custom_Other_List = KG_Table.Load(EquipSearch.Custom_Other_Tab.Path, EquipSearch.Custom_Other_Tab.Title)or 
+	EquipSearch.Custom_Other_List = KG_Table.Load(EquipSearch.Custom_Other_Tab.Path, EquipSearch.Custom_Other_Tab.Title)or
 															KG_Table.Load(EquipSearch.Custom_Other_Tab_2.Path, EquipSearch.Custom_Other_Tab_2.Title)
 	nCount = EquipSearch.Custom_Armor_List:GetRowCount()
 	for i = nCount, 2, -1 do
@@ -444,33 +467,33 @@ function EquipSearch.LoadData()
 		tData = EquipSearch.FormatItemInfo(tLine, ITEM_TABLE_TYPE.CUST_ARMOR)
 		table.insert(tDataBase, tData)
 	end
-	
+
 	nCount = EquipSearch.Custom_Weapon_List:GetRowCount()
 	for i = nCount, 2, -1 do
 		tLine = EquipSearch.Custom_Weapon_List:GetRow(i)
 		tData = EquipSearch.FormatItemInfo(tLine, ITEM_TABLE_TYPE.CUST_WEAPON)
 		table.insert(tDataBase, tData)
 	end
-	
+
 	nCount = EquipSearch.Custom_Trinket_List:GetRowCount()
 	for i = nCount, 2, -1 do
 		tLine = EquipSearch.Custom_Trinket_List:GetRow(i)
 		tData = EquipSearch.FormatItemInfo(tLine, ITEM_TABLE_TYPE.CUST_TRINKET)
 		table.insert(tDataBase, tData)
 	end
-	
+
 	nCount = EquipSearch.Custom_Other_List:GetRowCount()
 	for i = nCount, 2, -1 do
 		tLine = EquipSearch.Custom_Other_List:GetRow(i)
 		tData = EquipSearch.FormatItemInfo(tLine, ITEM_TABLE_TYPE.OTHER)
 		table.insert(tDataBase, tData)
 	end
-	
+
 	EquipSearch.Custom_Armor_List = nil
 	EquipSearch.Custom_Weapon_List = nil
 	EquipSearch.Custom_Trinket_List = nil
 	EquipSearch.Custom_Other_List = nil
-	
+
 	--读取装备大全数据库--
 	EquipSearch.Equipdb_List = KG_Table.Load(EquipSearch.Equipdb_Txt.Path, EquipSearch.Equipdb_Txt.Title)
 	nCount = EquipSearch.Equipdb_List:GetRowCount()
@@ -481,17 +504,17 @@ function EquipSearch.LoadData()
 		if not tEquipdb[dwTabeType] then
 			tEquipdb[dwTabeType] = {}
 		end
-		tEquipdb[dwTabeType][nID] = 
+		tEquipdb[dwTabeType][nID] =
 		{
 			szGetType = tLine.GetType or "",
 			szGetDesc = tLine.Get_Desc or "",
-			szGetForce = tLine.Get_Force or "",		
+			szGetForce = tLine.Get_Force or "",
 			szBelongMapID = tLine.BelongMapID or "",
 			szPrestigeRequire = tLine.PrestigeRequire or "",
 		}
 	end
 	EquipSearch.Equipdb_List = nil
-	
+
 	--从附魔数据读取马具表现ID--
 	--[[EquipSearch.Enchant_List = KG_Table.Load(EquipSearch.Enchant_Tab.Path, EquipSearch.Enchant_Tab.Title)
 	nCount = EquipSearch.Enchant_List:GetRowCount()
@@ -660,13 +683,13 @@ function EquipSearch.UpdateResultList(frame, nStart, tResult)
 		hItem.nRepresentID = tItem.nRepresentID
 		hItem.nColorID = tItem.nColorID
 		hItem.szEquipType = tItem.szEquipType
-		
+
         hBox.dwTabType = tItem.dwTabType
         hBox.nItemID = tItem.nItemID
 		hBox.nRepresentID = tItem.nRepresentID
 		hBox.nColorID = tItem.nColorID
 		hBox.szEquipType = tItem.szEquipType
-		
+
         local szKey = tItem.dwTabType..tItem.nItemID
 
         hBox:SetObject(UI_OBJECT_ITEM_INFO, GLOBAL.CURRENT_ITEM_VERSION, tItem.dwTabType, tItem.nItemID)
@@ -688,7 +711,7 @@ function EquipSearch.UpdateResultList(frame, nStart, tResult)
 		-- end
     end
     EquipSearch.OnUpdateItemList(hList, true)	--刷新搜索结果滚动条
-    
+
     local hWndRes = frame:Lookup("Wnd_Search")
     EquipSearch.UpdatePageInfo(hWndRes, nStart, #tResult)	--刷新结果列表翻页
 end
@@ -699,7 +722,7 @@ function EquipSearch.UpdatePageInfo(hWnd, nStart, nTotal)
 	local btnBack = hWnd:Lookup("Btn_Back1")
 	local btnNext = hWnd:Lookup("Btn_Next1")
 	local text    = hWnd:Lookup("", "Text_Page1")
-	
+
 	local nEnd = nStart + PAGE_RESULT_COUNT - 1
 	nEnd = math.min(nEnd, nTotal)
 	btnBack:Enable(nStart ~= 1)
@@ -785,7 +808,7 @@ end
 
 function EquipSearch.OnItemLButtonClick()
 	local szName = this:GetName()
-	
+
 	if szName == "Handle_ListContent" then
 		local szType = this:Lookup("Text_ListTitle"):GetText()
 		if EXPAND_ITEM_TYPE.szType == szType then
@@ -928,7 +951,7 @@ function EquipSearch.GetDropInfoFromEquipdb(tData)
 		else
 			szTip = szTip ..  GetFormatText(v .. "：\n  ", 23) .. GetFormatText(tGetDesc[i] .. "\n", 22)
 		end
-	end	
+	end
 	return szTip
 end
 
@@ -944,7 +967,7 @@ function EquipSearch.OnItemMouseEnter()
 			-- 	end
 			-- end
 			-- local x, y = this:GetAbsPos()
-			-- local w, h = this:GetSize()	
+			-- local w, h = this:GetSize()
 			-- if szTip ~= "" then
 			-- 	OutputTip(szTip, 400, {x, y, w, h})
 			-- else
@@ -956,7 +979,7 @@ function EquipSearch.OnItemMouseEnter()
 			local w, h = box:GetSize()
 			OutputItemTip(UI_OBJECT_ITEM_INFO, GLOBAL.CURRENT_ITEM_VERSION, box.dwTabType, box.nItemID, {x, y, w, h})
 			this:Lookup("Image_Light"):Show()
-		end 
+		end
     elseif this:IsLink() and this:GetType() == "Text" then
         this.nFont=this:GetFontScheme()
         this:SetFontScheme(188)
@@ -974,13 +997,13 @@ function EquipSearch.OnItemMouseLeave()
 	end
 end
 
-function EquipSearch.OnLButtonClick() 
+function EquipSearch.OnLButtonClick()
 		local frame = Station.Lookup("Normal/EquipSearch")
     local szName = this:GetName()
     if szName == "Btn_Search" then
         EquipSearch.UpdateResult()
     elseif szName == "Btn_SearchDefault" then
-    		EquipSearch.ResetFilter()				
+    		EquipSearch.ResetFilter()
     elseif szName == "Btn_Back1" then
         RESULT_PAGE_START = math.max(1, RESULT_PAGE_START - PAGE_RESULT_COUNT)
         EquipSearch.UpdateResultList(frame, RESULT_PAGE_START, tResult)
@@ -988,7 +1011,7 @@ function EquipSearch.OnLButtonClick()
         RESULT_PAGE_START = RESULT_PAGE_START + PAGE_RESULT_COUNT
         EquipSearch.UpdateResultList(frame, RESULT_PAGE_START, tResult)
     elseif szName == "Btn_Filter" then
-    
+
 				if not this:IsEnabled() then
 					return
 				end
@@ -1015,7 +1038,7 @@ function EquipSearch.OnLButtonClick()
 						end,
 						fnAutoClose = function() if EquipSearch.IsOpened() then return false else return true end end,
 					}
-		
+
 			   table.insert(menu, {szOption = "品质过滤",
 			   {szOption = "任何品质", bMCheck = true, bChecked = (tFilter.nQuality == -1), fnAction = function() tFilter.nQuality = -1 EquipSearch.UpdateResult() end,},
 			   {szOption = "破败", bMCheck = true, bChecked = (tFilter.nQuality == 0), fnAction = function() tFilter.nQuality = 0 EquipSearch.UpdateResult() end,rgb = {GetItemFontColorByQuality(0, false)},},
@@ -1073,7 +1096,7 @@ function EquipSearch.OnLButtonClick()
 			   )
 				PopupMenu(menu)
 
-				
+
     elseif szName == "Btn_Close" then
         EquipSearch.Close()
     end
@@ -1089,11 +1112,11 @@ end
 function EquipSearch.Open()
 
 	EquipSearch.LoadData()
-	
+
 	local frame = Station.Lookup("Normal/EquipSearch")
 	if not frame then
 		frame = Wnd.OpenWindow("Interface/EquipSearch/EquipSearch.ini", "EquipSearch")
-	else 
+	else
 		frame:Show()
 	end
 end
@@ -1106,7 +1129,7 @@ function EquipSearch.Close()
 	if EquipSearch.IsOpened() then
 		Wnd.CloseWindow("EquipSearch")
 	end
-	
+
 end
 
 local menu = {szOption = "装备查询插件", fnAction = function() if EquipSearch.IsOpened() then EquipSearch.Close() else EquipSearch.Open() end end}
