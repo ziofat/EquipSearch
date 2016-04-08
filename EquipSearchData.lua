@@ -113,6 +113,8 @@ Title = {
 	{f = "i", t = "Represent1"},
 	{f = "i", t = "SpecialRepair"},
 	{f = "i", t = "CanChangeMagic"},
+	{f = "s", t = "GrowthTabIndex"},
+	{f = "s", t = "NeedGrowthExp"},
 	}
 }
 
@@ -229,6 +231,8 @@ Title = {
 	{f = "i", t = "Represent1"},
 	{f = "i", t = "SpecialRepair"},
 	{f = "i", t = "CanChangeMagic"},
+	{f = "s", t = "GrowthTabIndex"},
+	{f = "s", t = "NeedGrowthExp"},
 	}
 }
 
@@ -345,6 +349,8 @@ Title = {
 	{f = "i", t = "Represent1"},
 	{f = "i", t = "SpecialRepair"},
 	{f = "i", t = "CanChangeMagic"},
+	{f = "s", t = "GrowthTabIndex"},
+	{f = "s", t = "NeedGrowthExp"},
 	}
 }
 
