@@ -106,15 +106,21 @@ Title = {
 	{f = "i", t = "RecommendID"},
 	{f = "i", t = "MaxStrengthLevel"},
 	{f = "i", t = "CanApart"},
-	{f = "i", t = "MapBanUseItemMask"},	
-	{f = "i", t = "IgnoreBindMask"},	
-	{f = "i", t = "CanExterior"},	
-	{f = "i", t = "BelongForceMask"},		
+	{f = "i", t = "MapBanUseItemMask"},
+	{f = "i", t = "IgnoreBindMask"},
+	{f = "i", t = "CanExterior"},
+	{f = "i", t = "BelongForceMask"},
 	{f = "i", t = "Represent1"},
 	{f = "i", t = "SpecialRepair"},
 	{f = "i", t = "CanChangeMagic"},
 	{f = "s", t = "GrowthTabIndex"},
 	{f = "s", t = "NeedGrowthExp"},
+	{f = "s", t = "CanShared"},
+	{f = "s", t = "MapBanTradeItemMask"},
+	{f = "s", t = "MapCanExistItemMask"},
+	{f = "s", t = "MapBanEquipItemMask"},
+
+
 	}
 }
 
@@ -224,15 +230,21 @@ Title = {
 	{f = "i", t = "RecommendID"},
 	{f = "i", t = "MaxStrengthLevel"},
 	{f = "i", t = "CanApart"},
-	{f = "i", t = "MapBanUseItemMask"},	
-	{f = "i", t = "IgnoreBindMask"},	
-	{f = "i", t = "CanExterior"},	
-	{f = "i", t = "BelongForceMask"},	
+	{f = "i", t = "MapBanUseItemMask"},
+	{f = "i", t = "IgnoreBindMask"},
+	{f = "i", t = "CanExterior"},
+	{f = "i", t = "BelongForceMask"},
 	{f = "i", t = "Represent1"},
 	{f = "i", t = "SpecialRepair"},
 	{f = "i", t = "CanChangeMagic"},
 	{f = "s", t = "GrowthTabIndex"},
 	{f = "s", t = "NeedGrowthExp"},
+	{f = "s", t = "CanShared"},
+	{f = "s", t = "MapBanTradeItemMask"},
+	{f = "s", t = "MapCanExistItemMask"},
+	{f = "s", t = "MapBanEquipItemMask"},
+
+
 	}
 }
 
@@ -342,15 +354,19 @@ Title = {
 	{f = "i", t = "RecommendID"},
 	{f = "i", t = "MaxStrengthLevel"},
 	{f = "i", t = "CanApart"},
-	{f = "i", t = "MapBanUseItemMask"},	
-	{f = "i", t = "IgnoreBindMask"},	
-	{f = "i", t = "CanExterior"},	
-	{f = "i", t = "BelongForceMask"},	
+	{f = "i", t = "MapBanUseItemMask"},
+	{f = "i", t = "IgnoreBindMask"},
+	{f = "i", t = "CanExterior"},
+	{f = "i", t = "BelongForceMask"},
 	{f = "i", t = "Represent1"},
 	{f = "i", t = "SpecialRepair"},
 	{f = "i", t = "CanChangeMagic"},
 	{f = "s", t = "GrowthTabIndex"},
 	{f = "s", t = "NeedGrowthExp"},
+	{f = "s", t = "CanShared"},
+	{f = "s", t = "MapBanTradeItemMask"},
+	{f = "s", t = "MapCanExistItemMask"},
+	{f = "s", t = "MapBanEquipItemMask"},
 	}
 }
 
@@ -401,7 +417,10 @@ Title = {
 	{f = "i", t = "ExistType"},
 	{f = "i", t = "MapBanUseItemMask"},
 	{f = "i", t = "IgnoreBindMask"},
-	{f = "i", t = "BelongForceMask"},		
+	{f = "i", t = "BelongForceMask"},
+	{f = "s", t = "CanShared"},
+	{f = "s", t = "MapBanTradeItemMask"},
+	{f = "s", t = "MapCanExistItemMask"},
 	}
 }
 
@@ -574,10 +593,10 @@ Title = {
 	{f = "i", t = "RecommendID"},
 	{f = "i", t = "MaxStrengthLevel"},
 	{f = "i", t = "CanApart"},
-	{f = "i", t = "MapBanUseItemMask"},	
-	{f = "i", t = "IgnoreBindMask"},	
-	{f = "i", t = "CanExterior"},	
-	{f = "i", t = "BelongForceMask"},		
+	{f = "i", t = "MapBanUseItemMask"},
+	{f = "i", t = "IgnoreBindMask"},
+	{f = "i", t = "CanExterior"},
+	{f = "i", t = "BelongForceMask"},
 	{f = "i", t = "Represent1"},
 	{f = "i", t = "SpecialRepair"},
 	}
@@ -687,10 +706,10 @@ Title = {
 	{f = "i", t = "RecommendID"},
 	{f = "i", t = "MaxStrengthLevel"},
 	{f = "i", t = "CanApart"},
-	{f = "i", t = "MapBanUseItemMask"},	
-	{f = "i", t = "IgnoreBindMask"},	
-	{f = "i", t = "CanExterior"},	
-	{f = "i", t = "BelongForceMask"},	
+	{f = "i", t = "MapBanUseItemMask"},
+	{f = "i", t = "IgnoreBindMask"},
+	{f = "i", t = "CanExterior"},
+	{f = "i", t = "BelongForceMask"},
 	{f = "i", t = "Represent1"},
 	{f = "i", t = "SpecialRepair"},
 	}
@@ -800,10 +819,10 @@ Title = {
 	{f = "i", t = "RecommendID"},
 	{f = "i", t = "MaxStrengthLevel"},
 	{f = "i", t = "CanApart"},
-	{f = "i", t = "MapBanUseItemMask"},	
-	{f = "i", t = "IgnoreBindMask"},	
-	{f = "i", t = "CanExterior"},	
-	{f = "i", t = "BelongForceMask"},	
+	{f = "i", t = "MapBanUseItemMask"},
+	{f = "i", t = "IgnoreBindMask"},
+	{f = "i", t = "CanExterior"},
+	{f = "i", t = "BelongForceMask"},
 	{f = "i", t = "Represent1"},
 	{f = "i", t = "SpecialRepair"},
 	}
@@ -856,6 +875,6 @@ Title = {
 	{f = "i", t = "ExistType"},
 	{f = "i", t = "MapBanUseItemMask"},
 	{f = "i", t = "IgnoreBindMask"},
-	{f = "i", t = "BelongForceMask"},		
+	{f = "i", t = "BelongForceMask"},
 	}
 }
